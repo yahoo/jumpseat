@@ -1,4 +1,4 @@
-# jumpseat [![Build Status](https://travis-ci.org/yahoo/jumpseat.png?branch=master)](https://travis-ci.org/yahoo/jumpseat) [![npm](https://badge.fury.io/js/jumpseat.png)](https://npmjs.org/package/jumpseat)
+# jumpseat [![Build Status](https://travis-ci.com/yahoo/jumpseat.svg?branch=master)](https://travis-ci.com/yahoo/jumpseat) [![npm](https://badge.fury.io/js/jumpseat.png)](https://npmjs.org/package/jumpseat)
 
 Hot restart a node server, automatically.
 
