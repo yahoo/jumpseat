@@ -1,5 +1,6 @@
 import { watch } from "chokidar";
 import { debounce } from "lodash";
+import { Server, Socket } from "net";
 import { dirname } from "path";
 
 const regex = /\/node_modules\/|\.node$/;
@@ -24,6 +25,18 @@ export const invalidate = (
   delete cache[root.filename];
 };
 
+// Forcefully stop the server when calling close, destroying all sockets
+const manage = (server: Server) => {
+  const sockets: Socket[] = [];
+  const close = server.close.bind(server);
+  server.on("connection", socket => sockets.push(socket));
+  server.close = cb => {
+    close(cb);
+    sockets.forEach(socket => socket.destroy());
+    return server;
+  };
+};
+
 watcher.on(
   "change",
   debounce(path => {
@@ -33,12 +46,15 @@ watcher.on(
       const server = require(entrypoint).server;
       server.close(() => {
         invalidate(require.cache[entrypoint], require.cache);
-        require(entrypoint);
+        manage(require(entrypoint).server);
       });
-      server.emit("close");
     } catch (e) {
       console.error("JUMPSEAT: error when restarting the server");
       console.error(e);
     }
   }, 100)
 );
+
+watcher.on("ready", () => {
+  manage(require(entrypoint).server);
+});
