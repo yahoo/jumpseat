@@ -8,7 +8,7 @@ const entrypoint = process.argv[1];
 const folder = dirname(entrypoint);
 const watcher = watch(folder, {
   ignoreInitial: true,
-  ignored: ["**/*.d.ts", "**/*.tsbuildinfo"]
+  ignored: ["**/*.d.ts", "**/*.tsbuildinfo"],
 });
 
 export const invalidate = (
@@ -29,17 +29,17 @@ export const invalidate = (
 const manage = (server: Server) => {
   const sockets: Socket[] = [];
   const close = server.close.bind(server);
-  server.on("connection", socket => sockets.push(socket));
-  server.close = cb => {
+  server.on("connection", (socket) => sockets.push(socket));
+  server.close = (cb) => {
     close(cb);
-    sockets.forEach(socket => socket.destroy());
+    sockets.forEach((socket) => socket.destroy());
     return server;
   };
 };
 
 watcher.on(
   "change",
-  debounce(path => {
+  debounce((path) => {
     console.log(`JUMPSEAT: change path="${path}"`);
 
     try {
