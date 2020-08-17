@@ -2,7 +2,7 @@ import * as chokidar from "chokidar";
 import * as jumpseat from ".";
 
 jest.mock("chokidar", () => ({
-  watch: jest.fn().mockReturnValue({ on: jest.fn() })
+  watch: jest.fn().mockReturnValue({ on: jest.fn() }),
 }));
 
 class Stub implements NodeModule {
@@ -14,10 +14,12 @@ class Stub implements NodeModule {
   public parent: any;
   public paths: any;
   public require: any;
+  public path: string;
 
   constructor(filename: string, children: NodeModule[] = []) {
     this.children = children;
     this.filename = filename;
+    this.path = "";
   }
 }
 
@@ -31,8 +33,8 @@ describe("watcher", () => {
       String.prototype,
       {
         ignoreInitial: true,
-        ignored: ["**/*.d.ts", "**/*.tsbuildinfo"]
-      }
+        ignored: ["**/*.d.ts", "**/*.tsbuildinfo"],
+      },
     ]);
   });
 });
@@ -46,7 +48,7 @@ describe("invalidate", () => {
   const index = new Stub("/app/index.js", [app]);
 
   const cache: Record<string, NodeModule> = {};
-  [app, index, lodash, native, routes].forEach(m => (cache[m.filename] = m));
+  [app, index, lodash, native, routes].forEach((m) => (cache[m.filename] = m));
   jumpseat.invalidate(cache["/app/index.js"], cache);
 
   it("should invalidate the require cache", () => {

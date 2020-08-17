@@ -8,15 +8,32 @@
   ],
   "license": "MIT",
   "author": "Suneil Nyamathi <suneil.nyamathi@verizonmedia.com>",
+  "main": "index.js",
   "files": [
     "index.js",
     "lib.js"
   ],
-  "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "tslint -p .",
+    "lint": "eslint *.ts",
     "test": "jest"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "prettier"
+    ],
+    "extends": [
+      "prettier"
+    ],
+    "rules": {
+      "sort-keys": "error",
+      "prettier/prettier": "error"
+    }
   },
   "jest": {
     "transform": {
@@ -24,19 +41,21 @@
     }
   },
   "dependencies": {
-    "chokidar": "^3.0.2",
-    "lodash": "4.17.15"
+    "chokidar": "^3.4.2",
+    "lodash": "4.17.20"
   },
   "devDependencies": {
-    "@types/jest": "^24.0.15",
-    "@types/lodash": "4.14.136",
-    "@types/node": "^12.6.8",
-    "jest": "^24.8.0",
-    "prettier": "^1.18.2",
-    "ts-jest": "^24.0.2",
-    "tslint": "^5.18.0",
-    "tslint-config-prettier": "^1.18.0",
-    "tslint-plugin-prettier": "^2.0.1",
-    "typescript": "^3.5.3"
+    "@types/jest": "^26.0.10",
+    "@types/lodash": "4.14.159",
+    "@types/node": "^14.6.0",
+    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/parser": "^3.9.0",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "jest": "^26.4.0",
+    "prettier": "^2.0.5",
+    "ts-jest": "^26.2.0",
+    "typescript": "^3.9.7"
   }
 }
