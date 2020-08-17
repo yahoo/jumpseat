@@ -14,10 +14,12 @@ class Stub implements NodeModule {
   public parent: any;
   public paths: any;
   public require: any;
+  public path: string;
 
   constructor(filename: string, children: NodeModule[] = []) {
     this.children = children;
     this.filename = filename;
+    this.path = "";
   }
 }
 
