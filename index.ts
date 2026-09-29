@@ -1,5 +1,4 @@
 import { watch } from "chokidar";
-import { debounce } from "lodash";
 import { Server, Socket } from "net";
 import { dirname } from "path";
 
@@ -38,9 +37,21 @@ const manage = (server: Server) => {
   };
 };
 
+// Trailing-edge debounce, called with the args of the last invocation
+const debounce = <A extends unknown[]>(
+  fn: (...args: A) => void,
+  ms: number
+) => {
+  let timer: NodeJS.Timeout | undefined;
+  return (...args: A) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), ms);
+  };
+};
+
 watcher.on(
   "change",
-  debounce((path) => {
+  debounce((path: string) => {
     console.log(`JUMPSEAT: change path="${path}"`);
 
     try {
